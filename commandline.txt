@@ -1,0 +1,64 @@
+ti// -Video Modes Tag- : See --special
+char *DriverUsage="\
+Option         Value   Description\n\
+--pal          {0|1}   Use PAL timing.\n\
+--newppu       {0|1}   Enable the new PPU core. (WARNING: May break savestates)\n\
+--inputcfg     d       Configures input device d on startup.\n\
+--input(1,2)   d       Set which input device to emulate for input 1 or 2.\n\
+                         Devices:  gamepad zapper powerpad.0 powerpad.1 arkanoid\n\
+--input(3,4)   d       Set the famicom expansion device to emulate for input(3, 4)\n\
+                         Devices: quizking hypershot mahjong toprider ftrainer\n\
+                         familykeyboard oekakids arkanoid shadow bworld 4player\n\
+--gamegenie    {0|1}   Enable emulated Game Genie.\n\
+--frameskip    x       Set # of frames to skip per emulated frame.\n\
+--xres         x       Set horizontal resolution for full screen mode.\n\
+--yres         x       Set vertical resolution for full screen mode.\n\
+--autoscale    {0|1}   Enable autoscaling in fullscreen. \n\
+--keepratio    {0|1}   Keep native NES aspect ratio when autoscaling. \n\
+--(x/y)scale   x       Multiply width/height by x. \n\
+                         (Real numbers >0 with OpenGL, otherwise integers >0).\n\
+--(x/y)stretch {0|1}   Stretch to fill surface on x/y axis (OpenGL only).\n\
+--bpp       {8|16|32}  Set bits per pixel.\n\
+--opengl       {0|1}   Enable OpenGL support.\n\
+--fullscreen   {0|1}   Enable full screen mode.\n\
+--noframe      {0|1}   Hide title bar and window decorations.\n\
+--special      {1-4}   Use special video scaling filters\n\
+                         (1 = hq2x 2 = Scale2x 3 = NTSC 2x 4 = hq3x 5 = Scale3x)\n\
+--palette      f       Load custom global palette from file f.\n\
+--sound        {0|1}   Enable sound.\n\
+--soundrate    x       Set sound playback rate to x Hz.\n\
+--soundq      {0|1|2}  Set sound quality. (0 = Low 1 = High 2 = Very High)\n\
+--soundbufsize x       Set sound buffer size to x ms.\n\
+--volume      {0-256}  Set volume to x.\n\
+--soundrecord  f       Record sound to file f.\n\
+--playmov      f       Play back a recorded FCM/FM2/FM3 movie from filename f.\n\
+--pauseframe   x       Pause movie playback at frame x.\n\
+--ripsubs      f       Convert movie's subtitles to srt\n\
+--subtitles    {0,1}   Enable subtitle display\n\
+--fourscore    {0,1}   Enable fourscore emulation\n\
+--no-config    {0,1}   Use default config file and do not save\n\
+--net          s       Connect to server 's' for TCP/IP network play.\n\
+--port         x       Use TCP/IP port x for network play.\n\
+--user         x       Set the nickname to use in network play.\n\
+--pass         x       Set password to use for connecting to the server.\n\
+--netkey       s       Use string 's' to create a unique session for the game loaded.\n\
+--players      x       Set the number of local players.\n\
+--rp2mic       {0,1}   Replace Port 2 Start with microphone (Famicom).\n\
+--nogui                Don't load the GTK GUI";
+
+
+// these should be moved to the man file
+//--nospritelim  {0|1}   Disables the 8 sprites per scanline limitation.\n
+//--trianglevol {0-256}  Sets Triangle volume.\n
+//--square1vol  {0-256}  Sets Square 1 volume.\n
+//--square2vol  {0-256}  Sets Square 2 volume.\n
+//--noisevol	{0-256}  Sets Noise volume.\n
+//--pcmvol	  {0-256}  Sets PCM volume.\n
+//--lowpass	  {0|1}   Enables low-pass filter if x is nonzero.\n
+//--doublebuf	{0|1}   Enables SDL double-buffering if x is nonzero.\n
+//--slend	  {0-239}   Sets the last drawn emulated scanline.\n
+//--ntsccolor	{0|1}   Emulates an NTSC TV's colors.\n
+//--hue		   x	  Sets hue for NTSC color emulation.\n
+//--tint		  x	  Sets tint for NTSC color emulation.\n
+//--slstart	{0-239}   Sets the first drawn emulated scanline.\n
+//--clipsides	{0|1}   Clips left and rightmost 8 columns of pixels.\n

@@ -1,0 +1,72 @@
+
+message MarkovInput {
+  // TODO
+}
+
+
+message FutureProto {
+  optional bytes inputs = 4;
+}
+
+message PlayFunRequest {
+  optional bytes current_state = 1;
+
+  optional bytes next = 2;
+  repeated FutureProto futures = 3;
+}
+
+message PlayFunResponse {
+  optional double immediate_score = 1;
+  optional double best_future_score = 2;
+  optional double worst_future_score = 3;
+  optional double futures_score = 4;
+  repeated double futurescores = 5;
+}
+
+// Given some state and a candidate path, try to find a better path.
+message TryImproveRequest {
+  optional bytes start_state = 1;
+  optional bytes improveme = 2;
+  optional bytes end_state = 3;
+  optional double end_integral = 4;
+
+  // How to do it?
+  enum Approach {
+    // Just generate a bunch of random alternatives
+    // of the same length.
+    RANDOM = 0;
+    // Try doing the opposite of what's in improveme,
+    // like pressing LEFT when it says RIGHT. Fixed
+    // number of iterations up front; remainder of
+    // iterations apply the strategy to subsequences.
+    OPPOSITES = 1;
+    // Try removing button presses from the input.
+    ABLATION = 2;
+    // Chop out sections of the input.
+    CHOP = 3;
+    // expansion, hill climbing ...
+  }
+
+  optional Approach approach = 5;
+  optional string seed = 6;
+  optional int32 iters = 7;
+  optional int32 maxbest = 8;
+}
+
+message TryImproveResponse {
+  // Top candidates with a "good enough" score. Limited
+  // to maxbest entries.
+  repeated bytes inputs = 1;
+  // Scores of the inputs (parallel array).
+  repeated double score = 2;
+
+  // Total number of new sequences tried.
+  optional int32 iters_tried = 3;
+  // Total number that were better than the original.
+  optional int32 iters_better = 4;
+}
+
+message HelperRequest {
+  optional PlayFunRequest playfun = 1;
+  optional TryImproveRequest tryimprove = 2;
+}

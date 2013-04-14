@@ -1,0 +1,260 @@
+
+with actual network, just one helper:
+
+GOT ANSWERS.
+Parallel step took 89 seconds.
+
+three helpers:
+
+LOOP. queued 93 done 93 of 93
+GOT ANSWERS.
+Parallel step took 32 seconds.
+
+ :)
+
+six helpers: 18 seconds!
+
+seven helpers: 18 seconds...
+
+benchmarking marionet with playfun caching:
+
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 90 seconds.
+                     - writing -
+Wrote 10 movie(s).
+Wrote distributions to mario-playfun-scores.svg.
+Wrote 290 objectives, skipping 44381 points, to mario
+Wrote weighted motifs to mario-playfun-motifs.html
+Current cache size: 102197 / 100000. next_seq 540305
+308095 hits and 232210 misses
+                     (wrote)
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 66 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 53 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 57 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 56 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 42 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 33 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 61 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 66 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 41 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 48 seconds.
+
+
+after refactor:
+
+Skipped 257 frames until first keypress/ffwd.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 89 seconds.
+                     - writing -
+Wrote 10 movie(s).
+Wrote distributions to mario-playfun-scores.svg.
+Wrote 290 objectives, skipping 44381 points, to mario-playfun-backtrack.svg
+Wrote weighted motifs to mario-playfun-motifs.html
+Current cache size: 102197 / 100000. next_seq 540305
+308095 hits and 232210 misses
+                     (wrote)
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 65 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 52 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 56 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 55 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 42 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 34 seconds.
+Parallel step with 93 nexts, 10 futures.
+Parallel step took 61 seconds.
+Parallel step with 93 nexts, 10 futures.
+
+.. basically the same.
+
+
+benchmarking playfun caching
+
+      77 best score 1077945.75 (382655.87 + 695289.88 future):
+      87 best score 784217.34 (114716.74 + 669500.60 future):
+      97 best score 768700.42 (76130.15 + 692570.27 future):
+Done.
+
+real    1m13.876s
+user    0m0.015s
+sys     0m0.015s
+
+
+With caching:
+
+                     (wrote)
+      77 best score 1077945.75 (382655.87 + 695289.88 future):
+      87 best score 784217.34 (114716.74 + 669500.60 future):
+      97 best score 768700.42 (76130.15 + 692570.27 future):
+Done.
+
+real    1m40.262s
+
+... argh! Too much time hashing, maybe?
+
+Using cityhash:
+
+                     (wrote)
+      77 best score 1077945.75 (382655.87 + 695289.88 future):
+      87 best score 784217.34 (114716.74 + 669500.60 future):
+      97 best score 768700.42 (76130.15 + 692570.27 future):
+Done.
+
+real    1m27.246s
+user    0m0.000s
+sys     0m0.015s
+
+... probably it's from copying byte vectors?
+
+malloc the keys/values, use unordered_map, don't clear cache
+like a bug:
+
+                     (wrote)
+      77 best score 1077945.75 (382655.87 + 695289.88 future):
+      87 best score 784217.34 (114716.74 + 669500.60 future):
+      97 best score 768700.42 (76130.15 + 692570.27 future):
+Done.
+
+real    1m23.005s
+user    0m0.000s
+sys     0m0.000s
+
+... yet the same :(
+
+MAYBE BECAUSE THERE ARE NO CACHE HITS...?
+
+                     (wrote)
+      77 best score 1077945.75 (382655.87 + 695289.88 future):
+      87 best score 784217.34 (114716.74 + 669500.60 future):
+      97 best score 768700.42 (76130.15 + 692570.27 future):
+Done.
+Current size: 226840 / 500000. next_seq 226840
+0 hits and 226840 misses
+
+real    1m22.033s
+user    0m0.000s
+sys     0m0.015s
+
+Fixed bug (using ptr equality instead of value equality on keys):
+
+                     (wrote)
+      77 best score 1077945.75 (382655.87 + 695289.88 future):
+      87 best score 784217.34 (114716.74 + 669500.60 future):
+      97 best score 768700.42 (76130.15 + 692570.27 future):
+Done.
+Current size: 129200 / 500000. next_seq 614440
+485240 hits and 129200 misses
+
+
+
+--------------------------------------------------
+benchmarking learnfun.exe
+
+-O, normal
+real    0m34.015s
+user    0m0.000s
+sys     0m0.015s
+
+-O2, flto
+real    0m33.075s
+user    0m0.000s
+sys     0m0.031s
+
+
+20000 frames of karate.nes, first try:
+
+real    0m7.674s
+user    0m0.000s
+sys     0m0.000s
+
+
+0000000000000036  MD5: ec712c4d58c3553f4b431285268cc93e
+
+real    0m7.650s
+user    0m0.000s
+sys     0m0.015s
+
+
+
+--- new emu_test ---
+
+Savestates are ok.
+Total for 11347 savestates: 24.53mb (avg 2266.99 bytes)
+
+real    0m23.592s
+user    0m0.015s
+sys     0m0.015s
+
+
+Don't save back buffer:
+
+Savestates are ok.
+Total for 11347 savestates: 22.58mb (avg 2086.42 bytes)
+
+real    0m15.136s
+user    0m0.000s
+sys     0m0.015s
+
+
+Don't save any movie info (seems there was none):
+
+Total for 11347 savestates: 22.58mb (avg 2086.42 bytes)
+
+real    0m15.040s
+user    0m0.000s
+sys     0m0.000s
+
+
+No need for headers that are constant:
+
+Savestates are ok.
+Total for 11347 savestates: 22.49mb (avg 2078.42 bytes)
+
+real    0m15.077s
+user    0m0.000s
+sys     0m0.000s
+
+
+Using SaveRAW and manual compression.
+
+Savestates are ok.
+Total for 11347 savestates: 22.45mb (avg 2074.42 bytes)
+
+real    0m15.176s
+user    0m0.000s
+sys     0m0.031s
+
+
+Compute and pass basis, but don't use it.
+
+Savestates are ok.
+Total for 11347 savestates: 22.45mb (avg 2074.42 bytes)
+
+real    0m15.271s
+user    0m0.000s
+sys     0m0.000s
+
+
+Using basis from frame 4935:
+
+Savestates are ok.
+Total for 11347 savestates: 20.24mb (avg 1870.41 bytes)
+
+real    0m15.227s
+user    0m0.000s
+sys     0m0.031s
+
