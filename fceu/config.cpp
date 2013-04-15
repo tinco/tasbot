@@ -42,7 +42,7 @@ FCEUX is dedicated to the fallen heroes\n\
 of NES emulation. In Memoriam --\n\
 ugetab\n\
 \n\
-"__TIME__" "__DATE__"\n";
+\n";
 
 	if(aboutString) return aboutString;
 
