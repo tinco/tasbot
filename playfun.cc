@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <cmath>
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -192,11 +193,6 @@ struct PlayFun {
 
     printf("Skipped %ld frames until first keypress/ffwd.\n", start);
   }
-
-  double ScoreIntegral(vector<uint8> *start_state,
-		       const vector<uint8> &inputs,
-		       vector<uint8> *final_memory);
-  static void Dualize(vector<uint8> *v, int start, int len);
 
   // PERF. Shouldn't really save every memory, but
   // we're using it for drawing SVG for now. This saves one
@@ -1789,6 +1785,11 @@ struct PlayFun {
   Motifs *motifs;
   vector< vector<uint8> > motifvec;
 };
+
+// Fixes Linux/GNU linker undefined reference error, not sure why.
+// playfun.cc:(.text+0x33ad): undefined reference to `PlayFun::MINFUTURELENGTH'
+// http://stackoverflow.com/questions/5508182/static-const-int-causes-linking-error-undefined-reference
+const int PlayFun::MINFUTURELENGTH;
 
 /**
  * The main loop for the SDL.

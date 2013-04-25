@@ -8,8 +8,10 @@
 #include "tasbot.h"
 
 #include "SDL_net.h"
+#ifndef __GNUC__
 // for getlasterror, etc.
 #include "SDL_net/SDLnetsys.h"
+#endif
 #include "marionet.pb.h"
 #include "util.h"
 #include "errno.h"
@@ -390,8 +392,13 @@ bool ReadProto(TCPsocket sock, T *t) {
   char header[4];
   int bytes = SDLNet_TCP_Recv(sock, (void *)&header, 4);
   if (4 != bytes) {
+#ifdef SDLNet_GetError
+    fprintf(stderr, "ReadProto: Failed to read length (got %d), err %s.\n",
+            bytes, SDLNet_GetError());
+#else
     fprintf(stderr, "ReadProto: Failed to read length (got %d), err %d.\n",
             bytes, SDLNet_GetLastError());
+#endif
     return false;
   }
 
@@ -406,8 +413,13 @@ bool ReadProto(TCPsocket sock, T *t) {
   // Drop-in replacement for SDLNet_TCP_Recv.
   int ret = sdlnet_recvall(sock, (void *)buffer, len);
   if (len != ret) {
+#ifdef SDLNet_GetError
+    fprintf(stderr, "ReadProto: Failed to read %d bytes (got %d), err %s\n",
+            len, ret, SDLNet_GetError());
+#else
     fprintf(stderr, "ReadProto: Failed to read %d bytes (got %d), err %d\n",
             len, ret, SDLNet_GetLastError());
+#endif
     free(buffer);
     return false;
   }
@@ -437,8 +449,13 @@ bool WriteProto(TCPsocket sock, const T &t) {
   SDLNet_Write32(len, (void*)header);
   int ret = SDLNet_TCP_Send(sock, (const void *)header, 4);
   if (4 != ret) {
+#ifdef SDLNet_GetError
+    fprintf(stderr, "Failed to send length (got %d) err %s.\n",
+            ret, SDLNet_GetError());
+#else
     fprintf(stderr, "Failed to send length (got %d) err %d.\n",
             ret, SDLNet_GetLastError());
+#endif
     return false;
   }
 
