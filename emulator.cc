@@ -5,7 +5,12 @@
 #include <string>
 #include <vector>
 #include <zlib.h>
+#ifdef __GNUC__
+#include <tr1/unordered_map>
+using tr1::unordered_map;
+#else
 #include <unordered_map>
+#endif
 
 #include "config.h"
 #include "fceu/driver.h"

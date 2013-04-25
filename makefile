@@ -1,10 +1,10 @@
 
 # Makefile made by tom7.
-default: playfun.exe learnfun.exe
-# tasbot.exe
-# emu_test.exe
+default: playfun learnfun
+# tasbot
+# emu_test
 
-all: playfun.exe tasbot.exe emu_test.exe objective_test.exe learnfun.exe weighted-objectives_test.exe
+all: playfun tasbot emu_test objective_test learnfun weighted-objectives_test
 
 # GPP=
 
@@ -28,16 +28,16 @@ PROTO_OBJECTS=marionet.pb.o
 
 
 ## If you don't have SDL, you can leave these out, and maybe it still works.
-#CCNETWORKING= -DMARIONET=1 -I SDL/include -I SDL_net
-#LINKSDL=  -mno-cygwin -lm -luser32 -lgdi32 -lwinmm -ldxguid
-#LINKNETWORKING= $(LINKSDL) -lwsock32 -liphlpapi
-#SDLOPATH=SDL/build
+CCNETWORKING= -DMARIONET=1 -I /usr/include/SDL
+LINKSDL=  -lSDL -lSDL_net
+LINKNETWORKING= $(LINKSDL) -lprotobuf -lpthread
+SDLOPATH=SDL/build
 #SDLOBJECTS=$(SDLOPATH)/SDL.o $(SDLOPATH)/SDL_error.o $(SDLOPATH)/SDL_fatal.o $(SDLOPATH)/SDL_audio.o $(SDLOPATH)/SDL_audiocvt.o $(SDLOPATH)/SDL_audiodev.o $(SDLOPATH)/SDL_mixer.o $(SDLOPATH)/SDL_mixer_MMX.o $(SDLOPATH)/SDL_mixer_MMX_VC.o $(SDLOPATH)/SDL_mixer_m68k.o $(SDLOPATH)/SDL_wave.o $(SDLOPATH)/SDL_cdrom.o $(SDLOPATH)/SDL_cpuinfo.o $(SDLOPATH)/SDL_active.o $(SDLOPATH)/SDL_events.o $(SDLOPATH)/SDL_expose.o $(SDLOPATH)/SDL_keyboard.o $(SDLOPATH)/SDL_mouse.o $(SDLOPATH)/SDL_quit.o $(SDLOPATH)/SDL_resize.o $(SDLOPATH)/SDL_rwops.o $(SDLOPATH)/SDL_getenv.o $(SDLOPATH)/SDL_iconv.o $(SDLOPATH)/SDL_malloc.o $(SDLOPATH)/SDL_qsort.o $(SDLOPATH)/SDL_stdlib.o $(SDLOPATH)/SDL_string.o $(SDLOPATH)/SDL_thread.o $(SDLOPATH)/SDL_timer.o $(SDLOPATH)/SDL_RLEaccel.o $(SDLOPATH)/SDL_blit.o $(SDLOPATH)/SDL_blit_0.o $(SDLOPATH)/SDL_blit_1.o $(SDLOPATH)/SDL_blit_A.o $(SDLOPATH)/SDL_blit_N.o $(SDLOPATH)/SDL_bmp.o $(SDLOPATH)/SDL_cursor.o $(SDLOPATH)/SDL_gamma.o $(SDLOPATH)/SDL_pixels.o $(SDLOPATH)/SDL_stretch.o $(SDLOPATH)/SDL_surface.o $(SDLOPATH)/SDL_video.o $(SDLOPATH)/SDL_yuv.o $(SDLOPATH)/SDL_yuv_mmx.o $(SDLOPATH)/SDL_yuv_sw.o $(SDLOPATH)/SDL_joystick.o $(SDLOPATH)/SDL_nullevents.o $(SDLOPATH)/SDL_nullmouse.o $(SDLOPATH)/SDL_nullvideo.o $(SDLOPATH)/SDL_diskaudio.o $(SDLOPATH)/SDL_dummyaudio.o $(SDLOPATH)/SDL_sysevents.o $(SDLOPATH)/SDL_sysmouse.o $(SDLOPATH)/SDL_syswm.o $(SDLOPATH)/SDL_wingl.o $(SDLOPATH)/SDL_dibevents.o $(SDLOPATH)/SDL_dibvideo.o $(SDLOPATH)/SDL_dx5events.o $(SDLOPATH)/SDL_dx5video.o $(SDLOPATH)/SDL_dx5yuv.o $(SDLOPATH)/SDL_dibaudio.o $(SDLOPATH)/SDL_dx5audio.o $(SDLOPATH)/SDL_mmjoystick.o $(SDLOPATH)/SDL_syscdrom.o $(SDLOPATH)/SDL_sysmutex.o $(SDLOPATH)/SDL_syssem.o $(SDLOPATH)/SDL_systhread.o $(SDLOPATH)/SDL_syscond.o $(SDLOPATH)/SDL_systimer.o $(SDLOPATH)/SDL_sysloadso.o
 # For some reason this compiles as 32-bit? But it's unused.
 # $(SDLOPATH)/version.o
-#NETWORKINGOBJECTS= $(SDLOBJECTS) SDL_net/SDLnet.o SDL_net/SDLnetTCP.o SDL_net/SDLnetUDP.o SDL_net/SDLnetselect.o sdl_win32_main.o netutil.o $(PROTO_OBJECTS)
+NETWORKINGOBJECTS= netutil.o $(PROTO_OBJECTS)
 
-PROTOBUFOBJECTS=protobuf/src/code_generator.o protobuf/src/coded_stream.o protobuf/src/common.o protobuf/src/cpp_enum.o protobuf/src/cpp_enum_field.o protobuf/src/cpp_extension.o protobuf/src/cpp_field.o protobuf/src/cpp_file.o protobuf/src/cpp_generator.o protobuf/src/cpp_helpers.o protobuf/src/cpp_message.o protobuf/src/cpp_message_field.o protobuf/src/cpp_primitive_field.o protobuf/src/cpp_service.o protobuf/src/cpp_string_field.o protobuf/src/descriptor.o protobuf/src/descriptor.pb.o protobuf/src/descriptor_database.o protobuf/src/dynamic_message.o protobuf/src/extension_set.o protobuf/src/extension_set_heavy.o protobuf/src/generated_message_reflection.o protobuf/src/generated_message_util.o protobuf/src/gzip_stream.o protobuf/src/importer.o protobuf/src/java_enum.o protobuf/src/java_enum_field.o protobuf/src/java_extension.o protobuf/src/java_field.o protobuf/src/java_file.o protobuf/src/java_generator.o protobuf/src/java_helpers.o protobuf/src/java_message.o protobuf/src/java_message_field.o protobuf/src/java_primitive_field.o protobuf/src/java_service.o protobuf/src/java_string_field.o protobuf/src/message.o protobuf/src/message_lite.o protobuf/src/once.o protobuf/src/parser.o protobuf/src/plugin.o protobuf/src/plugin.pb.o protobuf/src/printer.o protobuf/src/python_generator.o protobuf/src/reflection_ops.o protobuf/src/repeated_field.o protobuf/src/service.o protobuf/src/structurally_valid.o protobuf/src/strutil.o protobuf/src/subprocess.o protobuf/src/substitute.o protobuf/src/text_format.o protobuf/src/tokenizer.o protobuf/src/unknown_field_set.o protobuf/src/wire_format.o protobuf/src/wire_format_lite.o protobuf/src/zero_copy_stream.o protobuf/src/zero_copy_stream_impl.o protobuf/src/zero_copy_stream_impl_lite.o protobuf/src/zip_writer.o
+#PROTOBUFOBJECTS=protobuf/src/code_generator.o protobuf/src/coded_stream.o protobuf/src/common.o protobuf/src/cpp_enum.o protobuf/src/cpp_enum_field.o protobuf/src/cpp_extension.o protobuf/src/cpp_field.o protobuf/src/cpp_file.o protobuf/src/cpp_generator.o protobuf/src/cpp_helpers.o protobuf/src/cpp_message.o protobuf/src/cpp_message_field.o protobuf/src/cpp_primitive_field.o protobuf/src/cpp_service.o protobuf/src/cpp_string_field.o protobuf/src/descriptor.o protobuf/src/descriptor.pb.o protobuf/src/descriptor_database.o protobuf/src/dynamic_message.o protobuf/src/extension_set.o protobuf/src/extension_set_heavy.o protobuf/src/generated_message_reflection.o protobuf/src/generated_message_util.o protobuf/src/gzip_stream.o protobuf/src/importer.o protobuf/src/java_enum.o protobuf/src/java_enum_field.o protobuf/src/java_extension.o protobuf/src/java_field.o protobuf/src/java_file.o protobuf/src/java_generator.o protobuf/src/java_helpers.o protobuf/src/java_message.o protobuf/src/java_message_field.o protobuf/src/java_primitive_field.o protobuf/src/java_service.o protobuf/src/java_string_field.o protobuf/src/message.o protobuf/src/message_lite.o protobuf/src/once.o protobuf/src/parser.o protobuf/src/plugin.o protobuf/src/plugin.pb.o protobuf/src/printer.o protobuf/src/python_generator.o protobuf/src/reflection_ops.o protobuf/src/repeated_field.o protobuf/src/service.o protobuf/src/structurally_valid.o protobuf/src/strutil.o protobuf/src/subprocess.o protobuf/src/substitute.o protobuf/src/text_format.o protobuf/src/tokenizer.o protobuf/src/unknown_field_set.o protobuf/src/wire_format.o protobuf/src/wire_format_lite.o protobuf/src/zero_copy_stream.o protobuf/src/zero_copy_stream_impl.o protobuf/src/zero_copy_stream_impl_lite.o protobuf/src/zip_writer.o
 
 # PROFILE=-pg
 PROFILE=
@@ -51,7 +51,7 @@ OPT=-O2
 INCLUDES=-I "../cc-lib" -I "../cc-lib/city"
 
 #  -DNOUNZIP
-CPPFLAGS= $(CCNETWORKING) -DPSS_STYLE=1 -DDUMMY_UI -DHAVE_ASPRINTF -Wno-write-strings -m64 $(OPT) -DHAVE_ALLOCA -DNOWINSTUFF $(INCLUDES) $(PROFILE) $(FLTO) --std=c++0x
+CPPFLAGS= $(CCNETWORKING) -DPSS_STYLE=1 -DDUMMY_UI -DHAVE_ASPRINTF -Wno-write-strings -m64 $(OPT) -DHAVE_ALLOCA -DNOWINSTUFF $(INCLUDES) $(PROFILE) $(FLTO)
 #  CPPFLAGS=-DPSS_STYLE=1 -DDUMMY_UI -DHAVE_ASPRINTF -Wno-write-strings -m64 -O -DHAVE_ALLOCA -DNOWINSTUFF $(PROFILE) -g
 
 CCLIBOBJECTS=../cc-lib/util.o ../cc-lib/arcfour.o ../cc-lib/base/stringprintf.o ../cc-lib/city/city.o ../cc-lib/textsvg.o
@@ -89,40 +89,40 @@ OBJECTS=$(BASEOBJECTS) $(EMUOBJECTS) $(TASBOT_OBJECTS)
 	$(PROTOC) $< --cpp_out=.
 
 # without static, can't find lz or lstdcxx maybe?
-LFLAGS = -m64 $(LINKNETWORKING) -lz $(OPT) $(FLTO) $(PROFILE) -static -lpthread
+LFLAGS =  -m64 $(LINKNETWORKING) -lz $(OPT) $(FLTO) $(PROFILE)
 # -Wl,--subsystem,console
 # -static -fwhole-program
 # -static
 
-learnfun.exe : $(OBJECTS) learnfun.o
+learnfun : $(OBJECTS) learnfun.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
 # XXX never implemented this.
-showfun.exe : $(OBJECTS) showfun.o
+showfun : $(OBJECTS) showfun.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
-tasbot.exe : $(OBJECTS) tasbot.o
+tasbot : $(OBJECTS) tasbot.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
-playfun.exe : $(OBJECTS) playfun.o
+playfun : $(OBJECTS) playfun.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
-emu_test.exe : $(OBJECTS) emu_test.o
+emu_test : $(OBJECTS) emu_test.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
-objective_test.exe : $(BASEOBJECTS) objective.o objective_test.o
+objective_test : $(BASEOBJECTS) objective.o objective_test.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
-weighted-objectives_test.exe : $(BASEOBJECTS) weighted-objectives.o weighted-objectives_test.o util.o
+weighted-objectives_test : $(BASEOBJECTS) weighted-objectives.o weighted-objectives_test.o util.o
 	$(CXX) $^ -o $@ $(LFLAGS)
 
-test : emu_test.exe objective_test.exe weighted-objectives_test.exe
-	time ./emu_test.exe
-	time ./objective_test.exe
-	time ./weighted-objectives_test.exe
+test : emu_test objective_test weighted-objectives_test
+	time ./emu_test
+	time ./objective_test
+	time ./weighted-objectives_test
 
 clean :
-	rm -f learnfun.exe playfun.exe showfun.exe *_test.exe *.o $(EMUOBJECTS) $(CCLIBOBJECTS) gmon.out
+	rm -f learnfun playfun showfun *_test *.o $(EMUOBJECTS) $(CCLIBOBJECTS) gmon.out
 
 veryclean : clean cleantas
 
